@@ -50,10 +50,10 @@ myTerminal      = "gnome-terminal"
 modMask' :: KeyMask
 modMask' = mod4Mask
 -- Define workspaces
-myWorkspaces    = ["1:main","2:web","3:dev","4:term","5:chat","6:music", "7:gimp"]
+myWorkspaces    = ["1:main","2:web","3:vim","4:chat","5:music", "6:gimp"]
 -- Dzen/Conky
-myXmonadBar = "dzen2 -x '0' -y '0' -h '24' -w '640' -ta 'l' -fg '#FFFFFF' -bg '#1B1D1E' -fn '-*-bitstream vera sans-medium-r-normal-*-11-*-*-*-*-*-*-*'"
-myStatusBar = "conky -c /home/brafales/.xmonad/.conky_dzen | dzen2 -x '640' -w '1040' -h '24' -ta 'c' -bg '#1B1D1E' -fg '#FFFFFF' -fn '-*-bitstream vera sans-medium-r-normal-*-11-*-*-*-*-*-*-*' -y '0'"
+myXmonadBar = "dzen2 -x '1440' -y '0' -h '24' -w '640' -ta 'l' -fg '#FFFFFF' -bg '#1B1D1E'"
+myStatusBar = "conky -c /home/brafales/.xmonad/.conky_dzen | dzen2 -x '2080' -w '1040' -h '24' -ta 'c' -bg '#1B1D1E' -fg '#FFFFFF' -y '0'"
 myBitmapsDir = "/home/brafales/.xmonad/dzen2"
 --}}}
 -- Main {{{
@@ -82,9 +82,10 @@ manageHook' = (composeAll . concat $
     [ [resource     =? r            --> doIgnore            |   r   <- myIgnores] -- ignore desktop
     , [className    =? c            --> doShift  "1:main"   |   c   <- myDev   ] -- move dev to main
     , [className    =? c            --> doShift  "2:web"    |   c   <- myWebs   ] -- move webs to main
-    , [className    =? c            --> doShift  "4:music"  |   c   <- myMusic   ] -- move music to music
-    , [className    =? c            --> doShift  "5:gimp"    |   c   <- myGimp   ] -- move img to div
-    , [className    =? c            --> doShift	 "6:chat"   |   c   <- myChat  ] -- move chat to chat
+    , [className    =? c            --> doShift  "3:vim"    |   c   <- myVim   ] -- move webs to main
+    , [className    =? c            --> doShift	 "4:chat"   |   c   <- myChat  ] -- move chat to chat
+    , [className    =? c            --> doShift  "5:music"  |   c   <- myMusic   ] -- move music to music
+    , [className    =? c            --> doShift  "6:gimp"    |   c   <- myGimp   ] -- move img to div
 --    , [name         =? "ncmpcpp"      --> doShift  "4:music"]
     , [className    =? c            --> doCenterFloat       |   c   <- myFloats ] -- float my floats
     , [name         =? n            --> doCenterFloat       |   n   <- myNames  ] -- float my names
@@ -98,12 +99,13 @@ manageHook' = (composeAll . concat $
 
         -- classnames
         myFloats  = ["Smplayer","MPlayer","VirtualBox","Xmessage","XFontSel","Downloads","Nm-connection-editor"]
-        myWebs    = ["Firefox","Google-chrome","Chromium"]
+        myWebs    = ["Firefox","Google-chrome","Chromium", "Chromium-browser"]
         myMovie   = ["Boxee","Trine"]
 	myMusic	  = ["Rhythmbox","Spotify"]
 	myChat	  = ["Pidgin","Buddy List"]
 	myGimp	  = ["Gimp"]
-	myDev	  = ["Gvim"]
+	myDev	  = ["gnome-terminal"]
+	myVim	  = ["Gvim"]
 
         -- resources
         myIgnores = ["desktop","desktop_window","notify-osd","stalonetray","trayer"]
@@ -116,7 +118,7 @@ myDoFullFloat :: ManageHook
 myDoFullFloat = doF W.focusDown <+> doFullFloat
 -- }}}
 -- layoutHook' = customLayout
-layoutHook'  =  onWorkspaces ["1:main","4:music"] customLayout $ onWorkspaces ["5:gimp"] gimpLayout $ onWorkspaces ["6:chat"] imLayout $
+layoutHook'  =  onWorkspaces ["1:main","5:music"] customLayout $ onWorkspaces ["6:gimp"] gimpLayout $ onWorkspaces ["4:chat"] imLayout $
                 customLayout2
 
 --Bar
@@ -230,8 +232,8 @@ keys' conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
     , ((modMask .|. shiftMask,      xK_l        ), spawn "slock")
     -- Programs
     , ((0,                          xK_Print    ), spawn "scrot -e 'mv $f ~/screenshots/'")
-    , ((modMask,		            xK_w        ), spawn "chromium")
-    , ((modMask,                    xK_e        ), spawn "nautilus --no-desktop --browser")
+    , ((modMask,		            xK_o        ), spawn "chromium-browser")
+    , ((modMask,                    xK_m        ), spawn "nautilus --no-desktop --browser")
     -- Media Keys
     , ((0,                          0x1008ff12  ), spawn "amixer -q sset Master toggle") -- XF86AudioMute
     , ((0,                          0x1008ff11  ), spawn "amixer -q sset Master 655- unmute") -- XF86AudioLowerVolume
@@ -266,7 +268,7 @@ keys' conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
     
     -- quit, or restart
     , ((modMask .|. shiftMask,      xK_q        ), io (exitWith ExitSuccess))
-    , ((modMask,                    xK_q        ), spawn "killall conky dzen2; xmonad --recompile; xmonad --restart")
+    , ((modMask,                    xK_q        ), spawn "killall conky dzen2 && /home/brafales/.cabal/bin/xmonad --recompile && /home/brafales/.cabal/bin/xmonad --restart")
     ]
     ++
     -- mod-[1..9] %! Switch to workspace N
