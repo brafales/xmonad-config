@@ -144,11 +144,11 @@ myLogHook h = dynamicLogWithPP $ defaultPP
 -- Layout
 customLayout = avoidStruts $ tiled ||| Mirror tiled ||| Full ||| simpleFloat
   where
-    tiled   = ResizableTall 1 (2/100) (1/2)
+    tiled   = ResizableTall 1 (2/100) (1/2) []
 
 customLayout2 = avoidStruts $ Full ||| tiled ||| Mirror tiled ||| simpleFloat
   where
-    tiled   = ResizableTall 1 (2/100) (1/2)
+    tiled   = ResizableTall 1 (2/100) (1/2) []
 
 gimpLayout  = avoidStruts $ withIM (0.11) (Role "gimp-toolbox") $
               reflectHoriz $
