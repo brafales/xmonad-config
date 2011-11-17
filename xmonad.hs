@@ -126,7 +126,7 @@ myLogHook h = dynamicLogWithPP $ defaultPP
       , ppVisible           =   dzenColor "white" "#1B1D1E" . pad
       , ppHidden            =   dzenColor "white" "#1B1D1E" . pad
       , ppHiddenNoWindows   =   dzenColor "#7b7b7b" "#1B1D1E" . pad
-      , ppUrgent            =   dzenColor "red" "#1B1D1E" . pad
+      , ppUrgent            =   dzenColor "#ff0000" "#1B1D1E" . pad
       , ppWsSep             =   " "
       , ppSep               =   "  |  "
       , ppLayout            =   dzenColor "#ebac54" "#1B1D1E" .
@@ -172,7 +172,7 @@ colorFocusedBorder  = "#fd971f"
 
 barFont  = "terminus"
 barXFont = "inconsolata:size=12"
-xftFont = "xft: inconsolata-12"
+xftFont = "xft: inconsolata-14"
 --}}}
 
 -- Prompt Config {{{
@@ -207,9 +207,9 @@ keys' conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
     , ((modMask,		            xK_o        ), spawn "chromium-browser")
     , ((modMask,                    xK_m        ), spawn "nautilus --no-desktop --browser")
     -- Media Keys
-    , ((0,                          0x1008ff12  ), spawn "amixer -q sset Master toggle")        -- XF86AudioMute
-    , ((0,                          0x1008ff11  ), spawn "amixer -q sset Master 655- unmute")   -- XF86AudioLowerVolume
-    , ((0,                          0x1008ff13  ), spawn "amixer -q sset Master 655+ unmute")   -- XF86AudioRaiseVolume
+    , ((0,                          0x1008ff12  ), spawn "amixer -q sset Headphone toggle")        -- XF86AudioMute
+    , ((0,                          0x1008ff11  ), spawn "amixer -q sset Headphone 5%-")   -- XF86AudioLowerVolume
+    , ((0,                          0x1008ff13  ), spawn "amixer -q sset Headphone 5%+")   -- XF86AudioRaiseVolume
     , ((0,                          0x1008ff14  ), spawn "rhythmbox-client --play-pause")
     , ((0,                          0x1008ff17  ), spawn "rhythmbox-client --next")
     , ((0,                          0x1008ff16  ), spawn "rhythmbox-client --previous")
