@@ -49,7 +49,7 @@ myTerminal      = "gnome-terminal"
 modMask' :: KeyMask
 modMask' = mod4Mask
 -- Define workspaces
-myWorkspaces    = ["1:main","2:web","3:vim","4:chat","5:music", "6:gimp"]
+myWorkspaces    = ["1:main","2:web","3:vim","4:chat","5:music", "6:gimp", "7:misc"]
 -- Dzen/Conky
 myXmonadBar = "dzen2 -x '1440' -y '0' -h '24' -w '640' -ta 'l' -fg '#FFFFFF' -bg '#1B1D1E'"
 myStatusBar = "conky -c /home/brafales/.xmonad/.conky_dzen | dzen2 -x '2080' -w '1040' -h '24' -ta 'r' -bg '#1B1D1E' -fg '#FFFFFF' -y '0'"
@@ -115,7 +115,9 @@ manageHook' = (composeAll . concat $
 myDoFullFloat :: ManageHook
 myDoFullFloat = doF W.focusDown <+> doFullFloat
 -- }}}
-layoutHook'  =  onWorkspaces ["1:main","5:music"] customLayout $ onWorkspaces ["6:gimp"] gimpLayout $ onWorkspaces ["4:chat"] imLayout $
+layoutHook'  =  onWorkspaces ["1:main","5:music"] customLayout $ 
+                onWorkspaces ["6:gimp"] gimpLayout $ 
+                onWorkspaces ["4:chat"] imLayout $
                 customLayout2
 
 --Bar
