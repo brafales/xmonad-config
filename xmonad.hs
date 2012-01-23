@@ -70,6 +70,7 @@ main = do
       , normalBorderColor   = colorNormalBorder
       , focusedBorderColor  = colorFocusedBorder
       , borderWidth         = 2
+      , startupHook         = setWMName "LG3D"
 }
 --}}}
 
