@@ -59,7 +59,7 @@ myBitmapsDir = "/home/brafales/.xmonad/dzen2"
 main = do
     dzenLeftBar <- spawnPipe myXmonadBar
     dzenRightBar <- spawnPipe myStatusBar
-    xmonad $ defaultConfig
+    xmonad $ withUrgencyHookC dzenUrgencyHook { args = ["-bg", "red", "fg", "black", "-xs", "1", "-y", "25"] } urgencyConfig { remindWhen = Every 15 } $ defaultConfig
       { terminal            = myTerminal
       , workspaces          = myWorkspaces
       , keys                = keys'
@@ -101,7 +101,7 @@ manageHook' = (composeAll . concat $
         myWebs    = ["Firefox","Google-chrome","Chromium", "Chromium-browser"]
         myMovie   = ["Boxee","Trine"]
         myMusic	  = ["Rhythmbox","Spotify"]
-        myChat	  = ["Pidgin","Buddy List"]
+        myChat	  = ["Pidgin","Buddy List", "Psi", "Psi+", "chat", "psi"]
         myGimp	  = ["Gimp"]
         myDev	  = ["gnome-terminal"]
         myVim	  = ["Gvim"]
@@ -129,7 +129,7 @@ myLogHook h = dynamicLogWithPP $ defaultPP
       , ppVisible           =   dzenColor "white" "#1B1D1E" . pad
       , ppHidden            =   dzenColor "white" "#1B1D1E" . pad
       , ppHiddenNoWindows   =   dzenColor "#7b7b7b" "#1B1D1E" . pad
-      , ppUrgent            =   dzenColor "#ff0000" "#1B1D1E" . pad
+      , ppUrgent            =   dzenColor "black" "red" . pad
       , ppWsSep             =   " "
       , ppSep               =   "  |  "
       , ppLayout            =   dzenColor "#ebac54" "#1B1D1E" .
@@ -157,7 +157,7 @@ gimpLayout  = avoidStruts $ withIM (0.11) (Role "gimp-toolbox") $
               reflectHoriz $
               withIM (0.15) (Role "gimp-dock") Full
 
-imLayout    = avoidStruts $ withIM (1%5) (And (ClassName "Pidgin") (Role "buddy_list")) Grid 
+imLayout    = avoidStruts $ withIM (1%5) (Or (Title "Buddy List") (And (Resource "main") (ClassName "psi"))) Grid 
 --}}}
 -- Theme {{{
 -- Color names are easier to remember:
@@ -243,7 +243,7 @@ keys' conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
     
     -- quit, or restart
     , ((modMask .|. shiftMask,      xK_q        ), io (exitWith ExitSuccess))
-    , ((modMask,                    xK_q        ), spawn "killall conky dzen2 && /home/brafales/.cabal/bin/xmonad --recompile && /home/brafales/.cabal/bin/xmonad --restart")
+    , ((modMask,                    xK_q        ), spawn "/home/brafales/.cabal/bin/xmonad --recompile && /home/brafales/.cabal/bin/xmonad --restart")
     ]
     ++
     -- mod-[1..9] %! Switch to workspace N
@@ -258,7 +258,7 @@ keys' conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
     -- mod-shift-{w,e,r}, Move client to screen 1, 2, or 3
     --
     [((m .|. modMask, key), screenWorkspace sc >>= flip whenJust (windows . f))
-        | (key, sc) <- zip [xK_w, xK_e, xK_r] [0..]
+        | (key, sc) <- zip [xK_w, xK_e] [1, 0]
         , (f, m) <- [(W.view, 0), (W.shift, shiftMask)]]
 
 --}}}
